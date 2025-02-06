@@ -879,6 +879,11 @@ void AP_BattMonitor::check_failsafes(void)
                     action = _params[i]._failsafe_critical_action;
                     type_str = "critical";
                     break;
+                   // Add automatic LAND mode activation
+                    if (AP::vehicle().set_mode(AP_Vehicle::LAND)) {
+                        GCS_SEND_TEXT(MAV_SEVERITY_CRITICAL, "Battery critically low! Switching to LAND mode.");
+                    }
+                    break;
             }
 
             GCS_SEND_TEXT(MAV_SEVERITY_WARNING, "Battery %d is %s %.2fV used %.0f mAh", i + 1, type_str,
